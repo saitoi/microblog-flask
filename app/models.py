@@ -39,7 +39,6 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.followed_id == id),
         secondaryjoin=(followers.c.follower_id == id),
         back_populates='following')
-    
     def __repr__(self):
         return f'<User {self.username}>'
     
