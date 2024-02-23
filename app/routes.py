@@ -1,13 +1,13 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app
-from app.forms import LoginForm, EditProfileForm, EmptyForm, PostForm
 from flask_login import current_user, login_user
 from flask_login import logout_user, login_required
-from urllib.parse import urlsplit
-import sqlalchemy as sa
-from app import db
+from app import app, db
+from app.forms import LoginForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordRequestForm
 from app.models import User, Post
+from app.email import send_password_reset_email
+from urllib.parse import urlsplit
 from datetime import datetime, timezone
+import sqlalchemy as sa
 
 
 @app.before_request
@@ -36,10 +36,33 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(
+            sa.select(User).where(User.email == form.email.data))
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login'))
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['POST', 'GET'])
 @login_required
 def index():
+    """
+    View function for the home page.
+
+    This function handles the rendering of the home page, where users can view and create posts.
+    It also handles the submission of new posts and pagination of posts.
+
+    Returns:
+        A rendered template of the home page with the necessary data.
+    """
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
