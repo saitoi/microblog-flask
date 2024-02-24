@@ -8,28 +8,47 @@
         {% else %}
         <title> Welcome to Microblog </title>
         {% endif %}
+        <!-- Style links -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}" type="text/css">
+        <!-- Bootstrap link -->
+        <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZfz3+9IFsYFvSA8l3OgpdTJwE"
+        crossorigin="anonymous"
+        />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <div>Microblog: 
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            <a href="{{ url_for('explore') }}">Explore</a>
-            {% endif %}
-        </div>
-        <hr>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                {% if current_user.is_anonymous %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% else %}
+                <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('explore') }}">Explore</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="container mt-3">
+            <hr>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
         </ul>
         {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
+        </div>
+        <script>
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+        </script>
     </body>
 </html>
