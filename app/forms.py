@@ -51,10 +51,15 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username')
             
             
-class EmptyForm(FlaskForm):
-    submit = SubmitField('Submit')
+class EmptyForm(FlaskForm):    
+    submit = SubmitField('Yes, log out')
     
-    
+    def __init__(self, label=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if label:
+            self.submit.label.text = label
+
+
 class PostForm(FlaskForm):
     post = TextAreaField('Say something', validators=[
         DataRequired(), Length(min=1, max=140)])

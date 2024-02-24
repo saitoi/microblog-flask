@@ -37,6 +37,16 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    form = EmptyForm(label='Yes, log out')
+    if form.validate_on_submit():
+        logout_user()
+        return redirect(url_for('index'))
+    return render_template('logout.html', form=form)
+
+
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -185,10 +195,4 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
-
-
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
 
