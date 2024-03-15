@@ -45,10 +45,10 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
     
-    def set_password(self, password):
+    def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
     
-    def check_password(self, password):
+    def check_password(self, password: str):
         return check_password_hash(self.password_hash, password)
     
     def avatar(self, size):

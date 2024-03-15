@@ -1,11 +1,27 @@
-<table>
-    <tr valign="top">
-        <td><img src="{{ post.author.avatar(36) }}"></td>
-        <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}
-            </a>
-            says:<br>{{ post.body }}
-        </td>
-    </tr>
-</table>
+<div class="card mb-3 custom-card" style="max-width: 540px">
+    <!-- Increased max-width for longer card -->
+    <div class="custom-card">
+        <img
+            src="{{ post.author.avatar(50) }}"
+            class="img-fluid rounded-start"
+            style="width: 100px; height: 100px"
+            alt="User Avatar"
+        />
+        <div class="card-body">
+            <p>
+                <a
+                    href="{{ url_for('user', username=post.author.username) }}"
+                    class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                >
+                    {{ post.author.username }}
+                </a>
+            </p>
+            <p class="card-text">{{ post.body }}</p>
+            <p class="card-text">
+                <small class="text-body-secondary">
+                    Posted {{ moment(post.timestamp).fromNow() }}
+                </small>
+            </p>
+        </div>
+    </div>
+</div>
