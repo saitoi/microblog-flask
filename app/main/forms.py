@@ -1,5 +1,5 @@
+from flask import request
 from flask_wtf import FlaskForm
-from flask_wtf.form import _Auto
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Length
 import sqlalchemy as sa
@@ -44,7 +44,7 @@ class SearchForm(FlaskForm):
     
     def __init__(self, *args, **kwargs):
         if 'formdata' not in kwargs:
-            kwargs['formdata'] = _Auto()
+            kwargs['formdata'] = request.args
         if 'meta' not in kwargs:
             kwargs['meta'] = {'csrf': False}
         super(SearchForm, self).__init__(*args, **kwargs)
