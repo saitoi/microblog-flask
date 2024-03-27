@@ -9,6 +9,10 @@ This Flask application is a simple microblogging platform where users can post s
 - User profiles and avatars.
 - Password reset functionality.
 
+## Preview
+
+![Microblog Preview](assets/microblog-preview.png)
+
 ## Installation
 
 Clone the repository:
